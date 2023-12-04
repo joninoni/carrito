@@ -25,11 +25,30 @@ function leerCurso(curso){
         id:curso.querySelector('a').getAttribute('data-id'),
         cantidad:1,
     }
-    carritoCursos=[...carritoCursos,objCurso];
+    //revisa si ya existe un elemento en el carrito
+    const existe=carritoCursos.some(curso => curso.id === objCurso.id);
+    if(existe){
+        const cursos=carritoCursos.map(curso => {
+            if(curso.id ===objCurso.id){//actualiza la cantidad
+                curso.cantidad++
+                return curso
+            }
+            else{
+                return curso//agrega un curso nuevo al carrito
+            }
+        } )
+        carritoCursos=[...cursos];
+    }
+    else{
+        //añade un nuevo curso al carrito
+        carritoCursos=[...carritoCursos,objCurso];
+    }
+   
     carritoHtml();
 }
 //funcion que genera el html y lo muestra
 function carritoHtml(){
+    limpiarHtml();
     carritoCursos.forEach(curso =>{
         const {img,titulo,precio,cantidad,id}=curso
         const row =document.createElement('tr');
@@ -41,4 +60,10 @@ function carritoHtml(){
                        `                       
         contenedorCarrito.appendChild(row);
     })
+}
+function limpiarHtml(){
+    //elimina el html
+    while (contenedorCarrito.firstChild) {
+        contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+    }
 }
