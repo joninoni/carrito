@@ -8,6 +8,18 @@ let carritoCursos=[];
 cargarEventos();
 function cargarEventos(){
     listaCursos.addEventListener("click",agregarCurso);
+    carrito.addEventListener("click",eliminarCurso);
+    vaciarCarritoBtn.addEventListener("click",() => {
+        carritoCursos=[];//resetea el arreglo
+        limpiarHtml();//limpia todo el carrito
+    })
+}
+function eliminarCurso(e){
+    if(e.target.classList.contains('borrar-curso')){//verifica que demos en la x de eliminar
+        const cursoId=e.target.getAttribute('data-id');
+        carritoCursos=carritoCursos.filter(curso => curso.id !==cursoId);
+        carritoHtml();//vuelve a generar el html
+    }
 }
 // Funciones
 function agregarCurso(e){
@@ -56,8 +68,7 @@ function carritoHtml(){
                        <td>${titulo}</td>
                        <td>${precio}</td>
                        <td>${cantidad}</td>
-                       <td><a href="#" class="borrar-curso" data-id=${id}>x</a></td>
-                       `                       
+                       <td><a href="#" class="borrar-curso" data-id=${id}>x</a></td>`                       
         contenedorCarrito.appendChild(row);
     })
 }
